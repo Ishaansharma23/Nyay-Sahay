@@ -47,7 +47,7 @@ export default function SolutionPage() {
               The Solution
             </h1>
             <p className="text-lg text-black/60 dark:text-white/60 max-w-2xl mx-auto">
-              JusticeLink: A comprehensive AI-powered legal-tech platform.
+             न्याय Sahay: A comprehensive AI-powered legal-tech platform.
             </p>
           </div>
 

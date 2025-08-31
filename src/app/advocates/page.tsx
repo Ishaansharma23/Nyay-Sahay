@@ -15,7 +15,7 @@ export default function AdvocatesPage() {
   const advocates = [
     {
       id: 1,
-      name: "Advocate Sharma",
+      name: "Advocate Ishaan Sharma",
       specialization: "Criminal Law",
       experience: "15 years",
       rating: 4.9,
@@ -25,7 +25,7 @@ export default function AdvocatesPage() {
     },
     {
       id: 2,
-      name: "Advocate Patel", 
+      name: "Advocate Vikash Chor", 
       specialization: "Civil Rights",
       experience: "12 years",
       rating: 4.8,
@@ -35,7 +35,7 @@ export default function AdvocatesPage() {
     },
     {
       id: 3,
-      name: "Advocate Singh",
+      name: "Advocate Lalit Singh",
       specialization: "Corporate Law", 
       experience: "18 years",
       rating: 4.7,
@@ -45,7 +45,7 @@ export default function AdvocatesPage() {
     },
     {
       id: 4,
-      name: "Advocate Kumar",
+      name: "Advocate Harsh Yadav JI",
       specialization: "Family Law",
       experience: "10 years", 
       rating: 4.6,

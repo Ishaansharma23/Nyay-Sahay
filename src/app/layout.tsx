@@ -5,13 +5,13 @@ import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "JusticeLink - Bridging Citizens with Justice Through AI & Technology",
+  title: "न्याय Sahay - Bridging Citizens with Justice Through AI & Technology",
   description: "Empowering Citizens. Enabling Justice. A comprehensive AI-powered legal-tech platform for incident reporting, legal guidance, advocate connections, and judicial tracking.",
   keywords: "legal tech, justice, AI chatbot, incident reporting, advocate marketplace, judicial dashboard, legal rights",
-  authors: [{ name: "JusticeLink Team" }],
-  creator: "JusticeLink",
+  authors: [{ name: "न्याय Sahay Team" }],
+  creator: "न्याय Sahay",
   openGraph: {
-    title: "JusticeLink - Bridging Citizens with Justice",
+    title: "न्याय Sahay - Bridging Citizens with Justice",
     description: "AI-powered legal platform empowering citizens with justice access",
     type: "website",
   },
@@ -34,7 +34,7 @@ export default function RootLayout({
           data-include-search-params="true"
           data-only-in-iframe="true"
           data-debug="true"
-          data-custom-data='{"appName": "JusticeLink", "version": "1.0.0", "greeting": "Welcome to JusticeLink"}'
+          data-custom-data='{"appName": "न्याय Sahay", "version": "1.0.0", "greeting": "Welcome to JusticeLink"}'
         />
         {children}
         <VisualEditsMessenger />
