@@ -1,0 +1,182 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+@theme {
+--color-background: #ffffff;
+--color-foreground: #000000;
+--color-card: #ffffff;
+--color-card-foreground: #000000;
+--color-popover: #ffffff;
+--color-popover-foreground: #000000;
+--color-primary: #000000;
+--color-primary-foreground: #ffffff;
+--color-secondary: #f5f5f5;
+--color-secondary-foreground: #000000;
+--color-muted: #f8f8f8;
+--color-muted-foreground: #666666;
+--color-accent: #f0f0f0;
+--color-accent-foreground: #000000;
+--color-destructive: #000000;
+--color-destructive-foreground: #ffffff;
+--color-border: #e0e0e0;
+--color-input: #f5f5f5;
+--color-ring: #000000;
+--color-chart-1: #000000;
+--color-chart-2: #333333;
+--color-chart-3: #666666;
+--color-chart-4: #999999;
+--color-chart-5: #cccccc;
+--color-sidebar: #ffffff;
+--color-sidebar-foreground: #000000;
+--color-sidebar-primary: #000000;
+--color-sidebar-primary-foreground: #ffffff;
+--color-sidebar-accent: #f5f5f5;
+--color-sidebar-accent-foreground: #000000;
+--color-sidebar-border: #e0e0e0;
+--color-sidebar-ring: #000000;
+--radius-lg: 1rem;
+--radius-md: calc(1rem - 2px);
+--radius-sm: calc(1rem - 4px);
+--animate-accordion-down: accordion-down 0.2s ease-out;
+@keyframes accordion-down {
+from { height: 0; }
+to { height: var(--radix-accordion-content-height); }
+}
+--animate-accordion-up: accordion-up 0.2s ease-out;
+@keyframes accordion-up {
+from { height: var(--radix-accordion-content-height); }
+to { height: 0; }
+}
+--font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+--font-heading: "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.dark {
+--color-background: #000000;
+--color-foreground: #ffffff;
+--color-card: #000000;
+--color-card-foreground: #ffffff;
+--color-popover: #000000;
+--color-popover-foreground: #ffffff;
+--color-primary: #ffffff;
+--color-primary-foreground: #000000;
+--color-secondary: #1a1a1a;
+--color-secondary-foreground: #ffffff;
+--color-muted: #0f0f0f;
+--color-muted-foreground: #999999;
+--color-accent: #1a1a1a;
+--color-accent-foreground: #ffffff;
+--color-destructive: #ffffff;
+--color-destructive-foreground: #000000;
+--color-border: #333333;
+--color-input: #1a1a1a;
+--color-ring: #ffffff;
+--color-chart-1: #ffffff;
+--color-chart-2: #cccccc;
+--color-chart-3: #999999;
+--color-chart-4: #666666;
+--color-chart-5: #333333;
+--color-sidebar: #000000;
+--color-sidebar-foreground: #ffffff;
+--color-sidebar-primary: #ffffff;
+--color-sidebar-primary-foreground: #000000;
+--color-sidebar-accent: #1a1a1a;
+--color-sidebar-accent-foreground: #ffffff;
+--color-sidebar-border: #333333;
+--color-sidebar-ring: #ffffff;
+}
+
+/*
+Tailwind v4 default border color is currentColor.
+Keep legacy expectation for borders across components.
+*/
+@layer base {
+*,
+::after,
+::before,
+::backdrop,
+::file-selector-button {
+border-color: var(--color-border);
+}
+}
+@layer utilities {
+body {
+font-family: var(--font-sans);
+}
+}
+@layer base {
+:root {
+--background: var(--color-background);
+--foreground: var(--color-foreground);
+--card: var(--color-card);
+--card-foreground: var(--color-card-foreground);
+--popover: var(--color-popover);
+--popover-foreground: var(--color-popover-foreground);
+--primary: var(--color-primary);
+--primary-foreground: var(--color-primary-foreground);
+--secondary: var(--color-secondary);
+--secondary-foreground: var(--color-secondary-foreground);
+--muted: var(--color-muted);
+--muted-foreground: var(--color-muted-foreground);
+--accent: var(--color-accent);
+--accent-foreground: var(--color-accent-foreground);
+--destructive: var(--color-destructive);
+--destructive-foreground: var(--color-destructive-foreground);
+--border: var(--color-border);
+--input: var(--color-input);
+--ring: var(--color-ring);
+--chart-1: var(--color-chart-1);
+--chart-2: var(--color-chart-2);
+--chart-3: var(--color-chart-3);
+--chart-4: var(--color-chart-4);
+--chart-5: var(--color-chart-5);
+--radius: var(--radius-lg);
+--sidebar-background: var(--color-sidebar);
+--sidebar-foreground: var(--color-sidebar-foreground);
+--sidebar-primary: var(--color-sidebar-primary);
+--sidebar-primary-foreground: var(--color-sidebar-primary-foreground);
+--sidebar-accent: var(--color-sidebar-accent);
+--sidebar-accent-foreground: var(--color-sidebar-accent-foreground);
+--sidebar-border: var(--color-sidebar-border);
+--sidebar-ring: var(--color-sidebar-ring);
+}
+}
+@layer base {
+body {
+@apply bg-background text-foreground;
+}
+.container {
+margin-inline: auto;
+padding-inline: 2rem;
+}
+}
+@layer base {
+html {
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+text-rendering: optimizeLegibility;
+color-scheme: light dark;
+}
+body {
+background-color: var(--color-background);
+color: var(--color-foreground);
+}
+h1, h2, h3, h4 {
+font-family: var(--font-heading);
+color: var(--color-foreground);
+}
+h1 { font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-weight: 700; letter-spacing: -0.015em; }
+h3 { font-weight: 600; letter-spacing: -0.01em; }
+p { color: var(--color-foreground); }
+small, .text-muted-foreground { color: var(--color-muted-foreground); }
+a { color: var(--color-primary); text-decoration: none; }
+.font-sans { font-family: var(--font-sans); }
+.font-heading { font-family: var(--font-heading); }
+}
+
+/* Hide Next.js error overlay portal */
+nextjs-portal {
+  display: none !important;
+}
