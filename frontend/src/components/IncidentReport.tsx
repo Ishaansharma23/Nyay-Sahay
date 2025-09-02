@@ -2,20 +2,6 @@
 
 import React, { useState, useCallback, useRef } from "react";
 import emailjs from "@emailjs/browser";
-import {
-  Forward,
-  FileCheck,
-  FileInput,
-  File,
-  FileX2,
-  Lock,
-  Check,
-  FileLock2,
-  ArrowUpFromLine,
-  OctagonX,
-  EyeOff,
-  ClipboardX,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,7 +24,6 @@ interface FileUpload {
     size: string;
     timestamp: string;
   };
-  tags: string[];
 }
 
 interface TimelineEvent {
@@ -48,7 +33,6 @@ interface TimelineEvent {
   description: string;
   expanded: boolean;
   notes?: string;
-  contact?: string;
 }
 
 interface FormData {
@@ -59,11 +43,9 @@ interface FormData {
   description: string;
   privacyConsent: boolean;
   witnessContact: string;
-  witnessEncrypted: boolean;
   role: "citizen" | "advocate" | "official";
   dataRetention: "30" | "90" | "365";
-  redactionEnabled: boolean;
-  metadataScrub: boolean;
+  videoLink: string;
 }
 
 const IncidentReport: React.FC = () => {
@@ -76,11 +58,9 @@ const IncidentReport: React.FC = () => {
     description: "",
     privacyConsent: false,
     witnessContact: "",
-    witnessEncrypted: false,
     role: "citizen",
     dataRetention: "90",
-    redactionEnabled: false,
-    metadataScrub: true,
+    videoLink: "",
   });
   const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -118,7 +98,7 @@ const IncidentReport: React.FC = () => {
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
       const preview = await createFilePreview(file);
-      const fileUpload: FileUpload = {
+      newFiles.push({
         id: Date.now().toString() + i,
         file,
         progress: 0,
@@ -129,9 +109,7 @@ const IncidentReport: React.FC = () => {
           size: formatFileSize(file.size),
           timestamp: new Date().toLocaleString(),
         },
-        tags: ["location-auto", "timestamp-verified"],
-      };
-      newFiles.push(fileUpload);
+      });
     }
     setFiles((prev) => [...prev, ...newFiles]);
 
@@ -172,30 +150,32 @@ const IncidentReport: React.FC = () => {
 
   const handleSubmit = async () => {
     if (!formData.title || !formData.description || !formData.privacyConsent) {
-      toast.error("Please fill in all required fields and accept privacy consent");
+      toast.error("Please fill all required fields and accept privacy terms");
+      return;
+    }
+
+    if (!formData.videoLink && files.length === 0) {
+      toast.error("Provide a video link or upload at least one file");
       return;
     }
 
     setIsSubmitting(true);
 
-    // Simulate encryption process
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
     const newTraceId = generateTraceId();
     setTraceId(newTraceId);
 
-    // Add initial timeline event
-    const initialEvent: TimelineEvent = {
-      id: Date.now().toString(),
-      status: "submitted",
-      timestamp: new Date().toLocaleString(),
-      description: "Incident report submitted and encrypted",
-      expanded: false,
-      notes: "Report submitted with " + files.length + " evidence files",
-    };
-    setTimeline([initialEvent]);
+    // Timeline
+    setTimeline([
+      {
+        id: Date.now().toString(),
+        status: "submitted",
+        timestamp: new Date().toLocaleString(),
+        description: "Incident report submitted",
+        expanded: false,
+        notes: `Report includes ${files.length} file(s) and video link.`,
+      },
+    ]);
 
-    // Send email via EmailJS
     try {
       const emailParams = {
         trace_id: newTraceId,
@@ -208,14 +188,10 @@ const IncidentReport: React.FC = () => {
         role: formData.role,
         data_retention: formData.dataRetention + " days",
         files_list: files.map((f) => f.file.name).join(", "),
+        video_link: formData.videoLink,
       };
 
-      await emailjs.send(
-        "service_pscxtvc",
-        "template_sdmj8ip",
-        emailParams,
-        "42z0n9xicOJzfIpLW"
-      );
+      await emailjs.send("service_pscxtvc", "template_sdmj8ip", emailParams, "42z0n9xicOJzfIpLW");
 
       toast.success("Email sent successfully!");
     } catch (error) {
@@ -225,8 +201,6 @@ const IncidentReport: React.FC = () => {
 
     setIsSubmitting(false);
     setShowConfirmation(true);
-
-    toast.success("Incident report submitted successfully");
   };
 
   const toggleTimelineExpanded = (eventId: string) => {
@@ -238,7 +212,7 @@ const IncidentReport: React.FC = () => {
   const copyTraceId = () => {
     if (traceId) {
       navigator.clipboard.writeText(traceId);
-      toast.success("Trace ID copied to clipboard");
+      toast.success("Trace ID copied!");
     }
   };
 
@@ -250,41 +224,15 @@ const IncidentReport: React.FC = () => {
             <CardTitle>Incident Report</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Input
-              placeholder="Title"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            />
-            <Input
-              type="date"
-              value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            />
-            <Input
-              type="time"
-              value={formData.time}
-              onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-            />
-            <Input
-              placeholder="Location"
-              value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            />
-            <Textarea
-              placeholder="Description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            />
-            <Checkbox
-              checked={formData.privacyConsent}
-              onCheckedChange={(val) => setFormData({ ...formData, privacyConsent: !!val })}
-            >
-              I agree to the privacy terms
+            <Input placeholder="Title" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+            <Input type="date" value={formData.date} onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
+            <Input type="time" value={formData.time} onChange={(e) => setFormData({ ...formData, time: e.target.value })} />
+            <Input placeholder="Location" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} />
+            <Textarea placeholder="Description" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+            <Checkbox checked={formData.privacyConsent} onCheckedChange={(val) => setFormData({ ...formData, privacyConsent: !!val })}>
+              I agree to privacy terms
             </Checkbox>
-            <Select
-              value={formData.role}
-              onValueChange={(val) => setFormData({ ...formData, role: val as FormData["role"] })}
-            >
+            <Select value={formData.role} onValueChange={(val) => setFormData({ ...formData, role: val as FormData["role"] })}>
               <SelectTrigger>
                 <SelectValue placeholder="Role" />
               </SelectTrigger>
@@ -294,10 +242,7 @@ const IncidentReport: React.FC = () => {
                 <SelectItem value="official">Official</SelectItem>
               </SelectContent>
             </Select>
-            <Select
-              value={formData.dataRetention}
-              onValueChange={(val) => setFormData({ ...formData, dataRetention: val as FormData["dataRetention"] })}
-            >
+            <Select value={formData.dataRetention} onValueChange={(val) => setFormData({ ...formData, dataRetention: val as FormData["dataRetention"] })}>
               <SelectTrigger>
                 <SelectValue placeholder="Data Retention (days)" />
               </SelectTrigger>
@@ -308,6 +253,9 @@ const IncidentReport: React.FC = () => {
               </SelectContent>
             </Select>
 
+            {/* Video Link Input */}
+            <Input placeholder="Paste Video Link" value={formData.videoLink} onChange={(e) => setFormData({ ...formData, videoLink: e.target.value })} />
+
             {/* File Upload */}
             <div
               onDragOver={(e) => {
@@ -316,18 +264,11 @@ const IncidentReport: React.FC = () => {
               }}
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
-              className={`border-dashed border-2 p-4 text-center cursor-pointer ${dragOver ? "border-blue-500" : "border-gray-300"
-                }`}
+              className={`border-dashed border-2 p-4 text-center cursor-pointer ${dragOver ? "border-blue-500" : "border-gray-300"}`}
               onClick={() => fileInputRef.current?.click()}
             >
               <p>Drag & drop files here or click to select</p>
-              <input
-                type="file"
-                multiple
-                ref={fileInputRef}
-                className="hidden"
-                onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
-              />
+              <input type="file" multiple ref={fileInputRef} className="hidden" onChange={(e) => e.target.files && handleFileUpload(e.target.files)} />
             </div>
 
             {/* Uploaded Files */}
@@ -336,17 +277,12 @@ const IncidentReport: React.FC = () => {
                 <div key={f.id} className="flex items-center justify-between">
                   <span>{f.file.name} ({f.metadata.size})</span>
                   <Progress value={f.progress} className="flex-1 mx-2" />
-                  <Button variant="destructive" size="sm" onClick={() => removeFile(f.id)}>
-                    Remove
-                  </Button>
+                  <Button variant="destructive" size="sm" onClick={() => removeFile(f.id)}>Remove</Button>
                 </div>
               ))}
             </div>
 
-            <Button onClick={handleSubmit}>
-              {isSubmitting ? "Submitting..." : "Submit Report"}
-            </Button>
-
+            <Button onClick={handleSubmit}>{isSubmitting ? "Submitting..." : "Submit Report"}</Button>
           </CardContent>
         </Card>
 
@@ -363,9 +299,7 @@ const IncidentReport: React.FC = () => {
                     <Badge variant="secondary">{event.status}</Badge>
                     <span className="ml-2 text-sm text-gray-500">{event.timestamp}</span>
                   </div>
-                  <Button size="sm" onClick={() => toggleTimelineExpanded(event.id)}>
-                    {event.expanded ? "Collapse" : "Expand"}
-                  </Button>
+                  <Button size="sm" onClick={() => toggleTimelineExpanded(event.id)}>{event.expanded ? "Collapse" : "Expand"}</Button>
                 </div>
                 {event.expanded && <p className="mt-2">{event.description}</p>}
                 {event.expanded && event.notes && <p className="mt-1 text-sm text-gray-600">{event.notes}</p>}
@@ -382,15 +316,13 @@ const IncidentReport: React.FC = () => {
             </CardHeader>
             <CardContent className="flex justify-between items-center">
               <span>{traceId}</span>
-              <Button size="sm" onClick={copyTraceId}>
-                Copy
-              </Button>
+              <Button size="sm" onClick={copyTraceId}>Copy</Button>
             </CardContent>
           </Card>
         )}
 
-        {/* Confirmation Dialog */}
-        <Dialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+             {/* Confirmation Dialog */}
+             <Dialog open={showConfirmation} onOpenChange={setShowConfirmation}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Submission Successful</DialogTitle>
@@ -406,3 +338,4 @@ const IncidentReport: React.FC = () => {
 };
 
 export default IncidentReport;
+
