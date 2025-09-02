@@ -42,7 +42,7 @@ const IncidentReport: React.FC = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
-    emailjs.init("42z0n9xicOJzfIpLW");
+    emailjs.init("");
   }, []);
 
   const generateTraceId = (): string =>
@@ -77,7 +77,7 @@ const IncidentReport: React.FC = () => {
         video_link: formData.videoLink,
       };
 
-      await emailjs.send("service_pscxtvc", "template_sdmj8ip", emailParams);
+      await emailjs.send("", "", emailParams);
       toast.success("Email sent successfully!");
     } catch (error) {
       console.error("EmailJS error:", error);
