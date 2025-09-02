@@ -195,6 +195,8 @@
     --color-slate-700: #314158;
     --color-gray-100: #f3f4f6;
     --color-gray-200: #e5e7eb;
+    --color-gray-500: #6a7282;
+    --color-gray-600: #4a5565;
     --color-gray-700: #364153;
     --color-gray-900: #101828;
     --color-zinc-900: #18181b;
@@ -303,6 +305,8 @@
       --color-slate-700: color(display-p3 .205992 .253487 .336039);
       --color-gray-100: color(display-p3 .953567 .956796 .964321);
       --color-gray-200: color(display-p3 .899787 .906171 .92106);
+      --color-gray-500: color(display-p3 .421287 .446085 .504784);
+      --color-gray-600: color(display-p3 .297358 .332176 .39043);
       --color-gray-700: color(display-p3 .219968 .253721 .318679);
       --color-gray-900: color(display-p3 .070423 .0928982 .151928);
       --color-zinc-900: color(display-p3 .0937957 .093793 .104806);
@@ -316,6 +320,8 @@
       --color-slate-700: lab(26.9569% -1.47016 -15.6993);
       --color-gray-100: lab(96.1596% -.0823438 -1.13575);
       --color-gray-200: lab(91.6229% -.159115 -2.26791);
+      --color-gray-500: lab(47.7841% -.393182 -10.0268);
+      --color-gray-600: lab(35.6337% -1.58697 -10.8425);
       --color-gray-700: lab(27.1134% -.956401 -12.3224);
       --color-gray-900: lab(8.11897% .811279 -12.254);
       --color-zinc-900: lab(8.30603% .618205 -2.16572);
@@ -3320,6 +3326,14 @@
     .text-foreground\/80 {
       color: color-mix(in oklab, var(--color-foreground) 80%, transparent);
     }
+  }
+
+  .text-gray-500 {
+    color: var(--color-gray-500);
+  }
+
+  .text-gray-600 {
+    color: var(--color-gray-600);
   }
 
   .text-gray-700 {
