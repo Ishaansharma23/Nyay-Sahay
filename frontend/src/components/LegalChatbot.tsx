@@ -55,7 +55,8 @@ const legalKnowledgeBase: LegalKnowledge[] = [
   {
     id: "evidence-tampering",
     topic: "evidence tampering",
-    statue: "Section 201 IPC - Causing disappearance of evidence of offence",
+    statute: "Section 201 IPC - Causing disappearance of evidence of offence",
+
     explanation: "Destroying or tampering with evidence is a serious offense. If authorities are involved, it constitutes abuse of power and can be challenged in court.",
     nextSteps: [
       "Report tampering to higher authorities immediately",
