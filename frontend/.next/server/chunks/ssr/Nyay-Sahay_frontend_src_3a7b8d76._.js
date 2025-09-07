@@ -2772,7 +2772,7 @@ function HomePage() {
                                         "data-orchids-id": "src/app/page.tsx:39:14",
                                         "data-orchids-name": "span",
                                         className: "text-sm text-black/70 dark:text-white/70",
-                                        children: "Justice Hackathon 2024"
+                                        children: "Nyay-Sahay"
                                     }, void 0, false, {
                                         fileName: "[project]/Nyay-Sahay/frontend/src/app/page.tsx",
                                         lineNumber: 39,

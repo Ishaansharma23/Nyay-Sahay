@@ -37,7 +37,7 @@ export default function HomePage() {
             <div className="inline-flex items-center space-x-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full px-4 py-1 mb-6">
               <div className="w-2 h-2 bg-black dark:bg-white rounded-full"></div>
               <span className="text-sm text-black/70 dark:text-white/70">
-                Justice Hackathon 2024
+                Nyay-Sahay
               </span>
             </div>
 
